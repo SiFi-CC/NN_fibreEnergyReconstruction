@@ -1,3 +1,3 @@
 # NN_fibreEnergyReconstruction
 
-sificc_lib required
+neural-network fork 25.10.22
