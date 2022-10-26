@@ -2,9 +2,10 @@
 # date: oct 2022
 
 import uproot
-import Event
-import tqdm
+from tqdm import tqdm
 import sys
+from RootToNN.SiFiCC_Module import SiFiCC_Module
+from RootToNN.Event import Event
 
 class Simulation:
 
@@ -13,7 +14,7 @@ class Simulation:
     def __init__(self, file_name):
         root_file           = uproot.open(file_name)
         self.__setup(root_file)
-        self.tree           = rooot_file[b'Events']
+        self.tree           = root_file[b'Events']
         self.num_entries    = self.tree.numentries
         
     def __setup(self, root_file):
@@ -37,12 +38,12 @@ class Simulation:
         # Create and return event object at a certain position from a ROOT basket of data
 
         event = Event(event_number          = basket['EventNumber'][position],
-                      sipm_triggertime      = basket['SiPMData.fSiPMTriggerTime'][position]
-                      sipm_qdc              = basket['SiPMData.fSiPMQDC'][position]
-                      sipm_id               = basket['SiPMData.fSiPMId'][position]
-                      fibre_time            = basket['FibreData.fFibreTime'][position]
-                      fibre_energy          = basket['FibreData.fFibreEnergy'][position]
-                      fibre_id              = basket['FibreData.fFibreId'][position]
+                      sipm_triggertime      = basket['SiPMData.fSiPMTriggerTime'][position],
+                      sipm_qdc              = basket['SiPMData.fSiPMQDC'][position],
+                      sipm_id               = basket['SiPMData.fSiPMId'][position],
+                      fibre_time            = basket['FibreData.fFibreTime'][position],
+                      fibre_energy          = basket['FibreData.fFibreEnergy'][position],
+                      fibre_id              = basket['FibreData.fFibreId'][position],
                       scatterer             = self.scatterer,
                       absorber              = self.absorber
                      )
