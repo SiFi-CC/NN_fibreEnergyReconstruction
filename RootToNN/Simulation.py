@@ -41,9 +41,11 @@ class Simulation:
                       sipm_triggertime      = basket['SiPMData.fSiPMTriggerTime'][position],
                       sipm_qdc              = basket['SiPMData.fSiPMQDC'][position],
                       sipm_pos              = basket['SiPMData.fSiPMPosition'][position],
+                      sipm_id               = basket['SiPMData.fSiPMId'][position],
                       fibre_time            = basket['FibreData.fFibreTime'][position],
                       fibre_energy          = basket['FibreData.fFibreEnergy'][position],
                       fibre_pos             = basket['FibreData.fFibrePosition'][position],
+                      fibre_id              = basket['FibreData.fFibreId'][position],
                       scatterer             = self.scatterer,
                       absorber              = self.absorber
                      )

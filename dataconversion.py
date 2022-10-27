@@ -7,10 +7,12 @@ def generate_training_data(simulation, output_name, event_type=None):
         
         features = []
         l_events_seq = []
+        tensor_dimensions = [0,0,0]
         
         for idx, event in enumerate(simulation.iterate_events()):
             features.append(event.get_features())
             l_events_seq.append(idx)
+            
         
         print(features[0])
         features = np.array(features)
