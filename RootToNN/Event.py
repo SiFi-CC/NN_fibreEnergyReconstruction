@@ -23,8 +23,6 @@ class Event:
                 'FibreData.fFibrePosition.fY',
                 'FibreData.fFibrePosition.fZ']
 
-
-
     def __init__(self,
                  event_number,
                  sipm_triggertime,
@@ -43,24 +41,25 @@ class Event:
 
         # defines the main calues of a simulated event
 
-        self.event_number 		= event_number
-        self.sipm_triggertime 	= sipm_triggertime
-        self.sipm_qdc 			= sipm_qdc
-        self.sipm_x 			= sipm_x
-        self.simp_y 			= sipm_y
-        self.sipm_z 			= sipm_z
-        self.fibre_time 		= fibre_time
-        self.fibre_energy 		= fibre_energy
-        self.fibre_x 			= fibre_x
-        self.fibre_y 			= fibre_y
-        self.fibre_z 			= fibre_z
-        
+        self.event_number = event_number
+        self.sipm_triggertime = sipm_triggertime
+        self.sipm_qdc = sipm_qdc
+        self.sipm_x = sipm_x
+        self.simp_y = sipm_y
+        self.sipm_z = sipm_z
+        self.fibre_time = fibre_time
+        self.fibre_energy = fibre_energy
+        self.fibre_x = fibre_x
+        self.fibre_y = fibre_y
+        self.fibre_z = fibre_z
+
     def get_features(self):
 
         # Return relevant features in array
-        
-        # Change y value to reflect structure of tensor (tensor[0] and tensor[1])
-        
+
+        # Change y value to reflect structure of tensor (tensor[0] and
+        # tensor[1])
+
         if self.sipm_y < 0:
 			self.sipm_y = 0
 		else:
