@@ -14,14 +14,14 @@ class Event:
     l_leaves = ['EventNumber',
                 'SiPMData.fSiPMTriggerTime',
                 'SiPMData.fSiPMQDC',
-                'SiPMData.fSiPMPosition.fX',
-                'SiPMData.fSiPMPosition.fY',
-                'SiPMData.fSiPMPosition.fZ',
+                'SiPMData.SiPMData.fSiPMPosition.fX',
+                'SiPMData.SiPMData.fSiPMPosition.fY',
+                'SiPMData.SiPMData.fSiPMPosition.fZ',
                 'FibreData.fFibreTime',
                 'FibreData.fFibreEnergy',
-                'FibreData.fFibrePosition.fX',
-                'FibreData.fFibrePosition.fY',
-                'FibreData.fFibrePosition.fZ']
+                'FibreData.FibreData.fFibrePosition.fX',
+                'FibreData.FibreData.fFibrePosition.fY',
+                'FibreData.FibreData.fFibrePosition.fZ']
 
     def __init__(self,
                  event_number,
