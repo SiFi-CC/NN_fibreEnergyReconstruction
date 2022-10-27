@@ -67,7 +67,7 @@ class Event:
 			self.sipm_y = 1
 		
 		'''	
-		Format feature data:
+		Format of feature data:
 		Input: 3DTensor with indices corresponding to SiPM position and vector (qdc, t) as value
 		Output: 2DMatrix with indices corresponding to fibre position and vector (E, y) as value
 		'''
