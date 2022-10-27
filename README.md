@@ -1,3 +1,3 @@
 # NN_fibreEnergyReconstruction
 
-Dataconversion uses neural-network fork 25.10.22
+RootToNN is based on Awal's work, but stripped down to what's needed here
