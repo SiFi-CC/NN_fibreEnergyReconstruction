@@ -14,7 +14,7 @@ class Event:
     l_leaves = ['EventNumber',
                 'SiPMData.fSiPMTriggerTime',
                 'SiPMData.fSiPMQDC',
-                'SiPMData.fSiPMPosition'
+                'SiPMData.fSiPMPosition',
                 'SiPMData.fSiPMId',
                 'FibreData.fFibreTime',
                 'FibreData.fFibreEnergy',
