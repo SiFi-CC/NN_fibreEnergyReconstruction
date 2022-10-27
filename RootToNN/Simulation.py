@@ -40,14 +40,10 @@ class Simulation:
         event = Event(event_number          = basket['EventNumber'][position],
                       sipm_triggertime      = basket['SiPMData.fSiPMTriggerTime'][position],
                       sipm_qdc              = basket['SiPMData.fSiPMQDC'][position],
-                      sipm_x                = basket['SiPMData.SiPMData.fSiPMPosition.fX'][position],
-                      sipm_y                = basket['SiPMData.SiPMData.fSiPMPosition.fY'][position],
-                      sipm_z                = basket['SiPMData.SiPMData.fSiPMPosition.fZ'][position],
+                      sipm_pos              = basket['SiPMData.fSiPMPosition'][position],
                       fibre_time            = basket['FibreData.fFibreTime'][position],
                       fibre_energy          = basket['FibreData.fFibreEnergy'][position],
-                      fibre_x               = basket['FibreData.FibreData.fFibrePosition.fX'][position],
-                      fibre_y               = basket['FibreData.FibreData.fFibrePosition.fX'][position],
-                      fibre_z               = basket['FibreData.FibreData.fFibrePosition.fX'][position],
+                      fibre_pos             = basket['FibreData.fFibrePosition'][position],
                       scatterer             = self.scatterer,
                       absorber              = self.absorber
                      )
