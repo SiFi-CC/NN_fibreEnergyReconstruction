@@ -52,17 +52,17 @@ class Event:
         # Change y value to reflect structure of tensor (tensor[0] and
         # tensor[1])
 
-        
-        for y in self.sipm_y:
-	        if y < 0:
-		        y = 0
-	        else:
-		        y = 1
+        for i, y in enumerate(self.sipm_y):
+            if y < 0:
+                y = 0
+            else:
+                y = 1
+            self.sipm_y[i] = y
 
-    	# Format of feature data:
-    	# Input: 3DTensor with indices corresponding to SiPM position and vector (qdc, t) as value
-    	# Output: 2DMatrix with indices corresponding to fibre position and vector
-    	# (E, y) as value
+        # Format of feature data:
+        # Input: 3DTensor with indices corresponding to SiPM position and vector (qdc, t) as value
+        # Output: 2DMatrix with indices corresponding to fibre position and vector
+        # (E, y) as value
 
         features = np.array([np.array([self.sipm_qdc, self.sipm_triggertime]),
                              np.array([self.sipm_x, self.sipm_y, self.sipm_z]),
