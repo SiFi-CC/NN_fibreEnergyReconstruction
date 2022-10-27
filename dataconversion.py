@@ -7,7 +7,12 @@ def generate_training_data(simulation, output_name, event_type=None):
         
         features = []
         l_events_seq = []
-        tensor_dimensions = [0,0,0]
+        
+        # Tensor dimensions: 1*4 + 2*4, 2 layers on y, 7*4 + 8*4 with 0 entries to fill up in z
+        
+        input_tensor_dimensions     = [12,2,32]
+        output_matrix_dimensions    = [] #HEI WEIDER MAAN
+        
         
         for idx, event in enumerate(simulation.iterate_events()):
             features.append(event.get_features())
