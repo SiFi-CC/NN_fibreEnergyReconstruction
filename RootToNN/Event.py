@@ -60,18 +60,16 @@ class Event:
         # Change y value to reflect structure of tensor (tensor[0] and
         # tensor[1])
 
+        self.sipm_y = self.sipm_y / abs(self.sipm_y)
         if self.sipm_y < 0:
-			self.sipm_y = 0
-		else:
-			self.sipm_y = 1
-		
-		'''	
-		Format of feature data:
-		Input: 3DTensor with indices corresponding to SiPM position and vector (qdc, t) as value
-		Output: 2DMatrix with indices corresponding to fibre position and vector (E, y) as value
-		'''
+            self.sipm_y = 0
 
-        features = np.array([np.array([ self.sipm_qdc, self.sipm_triggertime]),
+    # Format of feature data:
+    # Input: 3DTensor with indices corresponding to SiPM position and vector (qdc, t) as value
+    # Output: 2DMatrix with indices corresponding to fibre position and vector
+    # (E, y) as value
+
+        features = np.array([np.array([self.sipm_qdc, self.sipm_triggertime]),
                              np.array([self.sipm_x, self.sipm_y, self.sipm_z]),
                              np.array([self.fibre_energy, self.fibre_y]),
                              np.array([self.fibre_x, self.fibre_z])
