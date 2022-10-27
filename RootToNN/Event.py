@@ -14,10 +14,14 @@ class Event:
     l_leaves = ['EventNumber',
                 'SiPMData.fSiPMTriggerTime',
                 'SiPMData.fSiPMQDC',
-                'SiPMData.fSiPMId',
+                'SiPMData.fSiPMPosition.fX',
+                'SiPMData.fSiPMPosition.fY',
+                'SiPMData.fSiPMPosition.fZ',
                 'FibreData.fFibreTime',
                 'FibreData.fFibreEnergy',
-                'FibreData.fFibreId']
+                'FibreData.fFibrePosition.fX',
+                'FibreData.fFibrePosition.fY',
+                'FibreData.fFibrePosition.fZ']
 
 
 
@@ -25,35 +29,53 @@ class Event:
                  event_number,
                  sipm_triggertime,
                  sipm_qdc,
-                 sipm_id,
+                 sipm_x,
+                 sipm_y,
+                 sipm_z,
                  fibre_time,
                  fibre_energy,
-                 fibre_id,
+                 fibre_x,
+                 fibre_y,
+                 fibre_z,
                  scatterer,
                  absorber
                  ):
 
         # defines the main calues of a simulated event
 
-        self.event_number = event_number
-        self.sipm_triggertime = sipm_triggertime
-        self.sipm_qdc = sipm_qdc
-        self.sipm_id = sipm_id
-        self.fibre_time = fibre_time
-        self.fibre_energy = fibre_energy
-        self.fibre_id = fibre_id
+        self.event_number 		= event_number
+        self.sipm_triggertime 	= sipm_triggertime
+        self.sipm_qdc 			= sipm_qdc
+        self.sipm_x 			= sipm_x
+        self.simp_y 			= sipm_y
+        self.sipm_z 			= sipm_z
+        self.fibre_time 		= fibre_time
+        self.fibre_energy 		= fibre_energy
+        self.fibre_x 			= fibre_x
+        self.fibre_y 			= fibre_y
+        self.fibre_z 			= fibre_z
         
     def get_features(self):
 
         # Return relevant features in array
+        
+        # Change y value to reflect structure of tensor (tensor[0] and tensor[1])
+        
+        if self.sipm_y < 0:
+			self.sipm_y = 0
+		else:
+			self.sipm_y = 1
+		
+		'''	
+		Format feature data:
+		Input: 3DTensor with indices corresponding to SiPM position and vector (qdc, t) as value
+		Output: 2DMatrix with indices corresponding to fibre position and vector (E, y) as value
+		'''
 
-        features = np.array([self.event_number,
-                             self.sipm_triggertime,
-                             self.sipm_qdc,
-                             self.sipm_id,
-                             self.fibre_time,
-                             self.fibre_energy,
-                             self.fibre_id
+        features = np.array([np.array([ self.sipm_qdc, self.sipm_triggertime]),
+                             np.array([self.sipm_x, self.sipm_y, self.sipm_z]),
+                             np.array([self.fibre_energy, self.fibre_y]),
+                             np.array([self.fibre_x, self.fibre_z])
                              ])
 
         return features
