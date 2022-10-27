@@ -31,7 +31,7 @@ class Event:
                  fibre_time,
                  fibre_energy,
                  fibre_pos,
-                 fibre_id
+                 fibre_id,
                  scatterer,
                  absorber
                  ):
