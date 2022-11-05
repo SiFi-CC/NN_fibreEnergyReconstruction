@@ -68,7 +68,7 @@ class Event:
 
         features = np.array([np.array(self.sipm_qdc),
                              np.array(self.sipm_triggertime),
-                             np.array(self.sipm_id),
+                             np.array(self.sipm_id, dtype = float),
                              np.array(self.fibre_energy),
                              np.array(self.fibre_y),
                              np.array(self.fibre_id)
