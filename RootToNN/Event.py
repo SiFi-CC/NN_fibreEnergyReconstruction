@@ -34,7 +34,6 @@ class Event:
 
         # defines the main calues of a simulated event
 
-        self.event_number       = event_number
         self.sipm_triggertime   = sipm_triggertime
         self.sipm_qdc           = sipm_qdc
         self.sipm_x             = sipm_pos.x
