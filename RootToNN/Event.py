@@ -67,7 +67,7 @@ class Event:
         # (E, y) as value
 
         features = np.array([np.array(self.sipm_qdc),
-                             np.array(self.sipm_triggertime)
+                             np.array(self.sipm_triggertime),
                              np.array(self.sipm_id),
                              np.array(self.fibre_energy),
                              np.array(self.fibre_y),
