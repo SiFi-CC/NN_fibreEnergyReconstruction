@@ -66,11 +66,11 @@ class Event:
         # Output: 2DMatrix with indices corresponding to fibre position and vector
         # (E, y) as value
 
-        features = np.array([np.array([self.sipm_qdc, self.sipm_triggertime]),
-                             np.array([self.sipm_x, self.sipm_y, self.sipm_z]),
+        features = np.array([np.array(self.sipm_qdc),
+                             np.array(self.sipm_triggertime)
                              np.array(self.sipm_id),
-                             np.array([self.fibre_energy, self.fibre_y]),
-                             np.array([self.fibre_x, self.fibre_z]),
+                             np.array(self.fibre_energy),
+                             np.array(self.fibre_y),
                              np.array(self.fibre_id)
                              ])
 
