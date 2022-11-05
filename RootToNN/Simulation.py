@@ -13,10 +13,11 @@ class Simulation:
     
     def __init__(self, file_name):
         root_file           = uproot.open(file_name)
-        self.__setup(root_file)
+        #self.__setup(root_file)
         self.tree           = root_file[b'Events']
         self.num_entries    = self.tree.numentries
-        
+    
+    '''    
     def __setup(self, root_file):
         
         # Extract scatterer and absorber modules setup from the ROOT file
@@ -32,22 +33,20 @@ class Simulation:
                                         setup['AbsorberThickness_z'].array()[0],
                                         setup['AbsorberPosition'].array()[0]
                                         )
-                                        
+    
+    '''                                 
     def __event_at_basket(self, basket, position):
         
         # Create and return event object at a certain position from a ROOT basket of data
 
-        event = Event(event_number          = basket['EventNumber'][position],
-                      sipm_triggertime      = basket['SiPMData.fSiPMTriggerTime'][position],
+        event = Event(sipm_triggertime      = basket['SiPMData.fSiPMTriggerTime'][position],
                       sipm_qdc              = basket['SiPMData.fSiPMQDC'][position],
                       sipm_pos              = basket['SiPMData.fSiPMPosition'][position],
                       sipm_id               = basket['SiPMData.fSiPMId'][position],
                       fibre_time            = basket['FibreData.fFibreTime'][position],
                       fibre_energy          = basket['FibreData.fFibreEnergy'][position],
                       fibre_pos             = basket['FibreData.fFibrePosition'][position],
-                      fibre_id              = basket['FibreData.fFibreId'][position],
-                      scatterer             = self.scatterer,
-                      absorber              = self.absorber
+                      fibre_id              = basket['FibreData.fFibreId'][position]
                      )
         return event
                                         
