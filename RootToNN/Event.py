@@ -11,8 +11,7 @@ class Event:
 
     # list of leaves that are required from a ROOT file to properly
     # instantiate an Event object
-    l_leaves = ['EventNumber',
-                'SiPMData.fSiPMTriggerTime',
+    l_leaves = ['SiPMData.fSiPMTriggerTime',
                 'SiPMData.fSiPMQDC',
                 'SiPMData.fSiPMPosition',
                 'SiPMData.fSiPMId',
@@ -23,7 +22,6 @@ class Event:
                 ]
 
     def __init__(self,
-                 event_number,
                  sipm_triggertime,
                  sipm_qdc,
                  sipm_pos,
@@ -31,9 +29,7 @@ class Event:
                  fibre_time,
                  fibre_energy,
                  fibre_pos,
-                 fibre_id,
-                 scatterer,
-                 absorber
+                 fibre_id
                  ):
 
         # defines the main calues of a simulated event
