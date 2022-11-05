@@ -72,6 +72,6 @@ class Event:
                              np.array(self.fibre_energy),
                              np.array(self.fibre_y),
                              np.array(self.fibre_id)
-                             ])
+                             ], dtype=object)
 
         return features
