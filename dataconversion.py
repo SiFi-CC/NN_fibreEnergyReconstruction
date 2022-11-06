@@ -19,6 +19,18 @@ def tensor_index(sipm_id):
         z = (sipm_id + 16) % 32
     return int(x), int(y), int(z)
 
+# give position in matrix based on fibre_id
+def matrix_index(fibre_id):
+    # x and z in scatterer
+    if fibre_id < 385:
+        x = fibre_id // 55
+        z = fibre_id % 55 # Maybe add correction
+    else:
+        fibre_id -= 385
+        x = (fibre_id // 63) + 7
+        z = fibre_id % 63
+    return int(x), int(z)
+
 
 def generate_training_data(simulation, output_name, event_type=None):
     '''Build and store the generated features and targets from a ROOT simulation'''
@@ -28,27 +40,36 @@ def generate_training_data(simulation, output_name, event_type=None):
     l_events_seq 	= []
 
     # Tensor dimensions: 1*4 + 2*4, 2 layers on y, 7*4 + 8*4 with 0 entries to
-    # fill up in z
-
+    # fill up in z and 2 for (qdc, t)
+    # Matrix dimensions: 12 * 2 - 2, no y, 7*4*2 - 1 + 8*4*2 -1, (2 for (energy, y)
     input_tensor_dimensions 	= (12, 2, 32, 2)
-    output_matrix_dimensions 	= []  # HEI WEIDER MAAN
+    output_matrix_dimensions 	= (22, 118, 2)  # HEI WEIDER MAAN
     all_events_input 		= []
+    all_events_output           = []
 
     for idx, event in enumerate(simulation.iterate_events()):
         l_events_seq.append(idx)
         input_tensor = np.zeros(input_tensor_dimensions)
+        output_matrix = np.zeros(output_matrix_dimensions)
         event_features = event.get_features()
+
         for counter, sipm_id in enumerate(event_features[2]):
             i, j, k = tensor_index(sipm_id)
             input_tensor[i][j][k][0] = event_features[0][counter]
             input_tensor[i][j][k][1] = event_features[1][counter]
         all_events_input.append(input_tensor)
+        
+        for counter, fibre_id in enumerate(event_features[5]):
+            n, m = matrix_index(fibre_id)
+            output_matrix[n][m][0] = event_features[3][counter]
+            output_matrix[n][m][1] = event_features[4][counter]
+        all_events_output.append(output_matrix)
 
     # save features as numpy tensors
     with open(output_name, 'wb') as f_train:
         np.savez_compressed(f_train,
-                            all_input=all_input,
-                            sequence=l_events_seq
+                            all_events_input  = all_events_input,
+                            all_events_output = all_events_output
                             )
 
 
