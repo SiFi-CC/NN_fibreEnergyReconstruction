@@ -71,7 +71,6 @@ class Event:
                              np.array(self.sipm_id, dtype = float),
                              np.array(self.fibre_energy),
                              np.array(self.fibre_y),
-                             np.array(self.fibre_id)
-                             ], dtype=object)
+                             np.array(self.fibre_id, dtype=float)])
 
         return features
