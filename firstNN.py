@@ -2,7 +2,10 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
+
 path = "test.npz"
+
+# KOMMENTAREN----------------------------------------------------------------------------
 with np.load(path) as data:
     input_data = data["all_events_input"]
     output_data = data["all_events_output"]
