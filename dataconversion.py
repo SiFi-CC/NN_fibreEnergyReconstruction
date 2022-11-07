@@ -2,8 +2,6 @@ from RootToNN import Simulation, Tensor3d
 import numpy as np
 
 # give position in tensor based on sipm_id
-
-
 def tensor_index(sipm_id):
     # determine y
     y = sipm_id // 368
@@ -37,7 +35,6 @@ def generate_training_data(simulation, output_name, event_type=None):
 
     sipm_features 	= []
     fibre_features 	= []
-    l_events_seq 	= []
 
     # Tensor dimensions: 1*4 + 2*4, 2 layers on y, 7*4 + 8*4 with 0 entries to
     # fill up in z and 2 for (qdc, t)
@@ -46,19 +43,23 @@ def generate_training_data(simulation, output_name, event_type=None):
     output_matrix_dimensions 	= (22, 118, 2)  # HEI WEIDER MAAN
     all_events_input 		= []
     all_events_output           = []
-
+    
+    # iterate over events
     for idx, event in enumerate(simulation.iterate_events()):
-        l_events_seq.append(idx)
+        # initialize tensor for each event
         input_tensor = np.zeros(input_tensor_dimensions)
         output_matrix = np.zeros(output_matrix_dimensions)
+        # load event features
         event_features = event.get_features()
-
+        
+        # make entries in tensor and saving tensor in list
         for counter, sipm_id in enumerate(event_features[2]):
             i, j, k = tensor_index(sipm_id)
             input_tensor[i][j][k][0] = event_features[0][counter]
             input_tensor[i][j][k][1] = event_features[1][counter]
         all_events_input.append(input_tensor)
         
+        # make entries in tensor and saving tensor in list
         for counter, fibre_id in enumerate(event_features[5]):
             n, m = matrix_index(fibre_id)
             output_matrix[n][m][0] = event_features[3][counter]
