@@ -5,34 +5,46 @@ from tensorflow import keras
 
 path = "test.npz"
 
-# KOMMENTAREN----------------------------------------------------------------------------
+# load data
 with np.load(path) as data:
     input_data = data["all_events_input"]
     output_data = data["all_events_output"]
-   
 
-    output_data = output_data.flatten()
-
- 
     print(input_data.shape)
     print(output_data.shape)
 
-    X_train = input_data[:400]
-    Y_train = output_data[:400]
+    # slice data
+    X_train = input_data[:360]
+    Y_train = output_data[:360]
+    X_val   = input_data[360:400]
+    Y_val   = output_data[360:400]
     X_test  = input_data[400:]
     Y_test  = output_data[400:]
 
-    model = keras.Sequential([keras.layers.Flatten(),
-                          keras.layers.Dense(6000, activation = "relu"),
-                          keras.layers.Dense(6000, activation = "relu"),
-                          keras.layers.Dense(6000, activation = "relu"),
-                          keras.layers.Dense(6000, activation = "relu"),
-                          keras.layers.Dense(2)])
+    # define model
+    model = keras.Sequential([keras.layers.InputLayer(input_shape = (12,2,32,2)),
+                              keras.layers.Conv3D(filters = 10, kernel_size = [3,2,3]),
+                              keras.layers.Flatten(),
+                              keras.layers.Dense(5192, activation = "elu"),
+                              keras.layers.Reshape((22,118,2,))])
+    # compile model
     model.compile(loss='mean_absolute_error',
-              optimizer = keras.optimizers.Adam(0.001),
-              metrics=['accuracy'])
+                  optimizer = keras.optimizers.Adam(0.001),
+                  metrics=['accuracy']
+                  )
 
-    model.fit(X_train, Y_train, epochs=30)
+    # train model
+    model.fit(X_train, 
+              Y_train, 
+              epochs = 30,    
+              validation_data = (X_val, Y_val), 
+              callbacks = [tf.keras.callbacks.EarlyStopping('val_loss', patience=3)],
+              batch_size = 1
+              )
 
+    #evaluate model
+    score = model.evaluate(X_test, Y_test, verbose = 0) 
 
+    print('Test loss:', score[0]) 
+    print('Test accuracy:', score[1])
                               
