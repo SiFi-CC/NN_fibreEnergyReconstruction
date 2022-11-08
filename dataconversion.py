@@ -75,6 +75,6 @@ def generate_training_data(simulation, output_name, event_type=None):
 
 
 simulation = Simulation(
-    file_name="/net/data_g4rt/projects/SiFiCC/InputforNN/SiPMNNNewGeometry/ExampleDataFile.root")
+    file_name="/net/data_g4rt/projects/SiFiCC/InputforNN/SiPMNNNewGeometry/FinalDetectorVersion_RasterCoupling_8e7protons.root")
 
-generate_training_data(simulation=simulation, output_name='test.npz')
+generate_training_data(simulation=simulation, output_name='1.npz')
