@@ -43,7 +43,7 @@ with np.load(path) as data:
               epochs = 1000,    
               validation_data = (X_val, Y_val), 
               callbacks = [tf.keras.callbacks.EarlyStopping('val_loss', patience=3)],
-              batch_size = 1
+              batch_size = 100
               )
 
     #evaluate model
