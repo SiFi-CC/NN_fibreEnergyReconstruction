@@ -47,8 +47,8 @@ def generate_training_data(simulation, output_name, event_type=None):
     # iterate over events
     for idx, event in enumerate(simulation.iterate_events()):
         # initialize tensor for each event
-        input_tensor = np.zeros(input_tensor_dimensions)
-        output_matrix = np.zeros(output_matrix_dimensions)
+        input_tensor = -np.ones(input_tensor_dimensions)
+        output_matrix = -np.ones(output_matrix_dimensions)
         # load event features
         event_features = event.get_features()
         
