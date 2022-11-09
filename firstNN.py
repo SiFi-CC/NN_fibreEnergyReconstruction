@@ -32,18 +32,18 @@ with np.load(path) as data:
                               keras.layers.Dense(5192, activation = "elu"),
                               keras.layers.Reshape((22,118,2,))])
     # compile model
-    model.compile(loss='mean_absolute_error',
+    model.compile(loss='mean_squared_error',
                   optimizer = keras.optimizers.Adam(0.001),
-                  metrics=['accuracy']
+                  metrics=['mse']
                   )
 
     # train model
     history = model.fit(X_train, 
               Y_train, 
-              epochs = 1000,    
+              epochs = 10000,    
               validation_data = (X_val, Y_val), 
-              callbacks = [tf.keras.callbacks.EarlyStopping('val_loss', patience=3)],
-              batch_size = 100
+              callbacks = [tf.keras.callbacks.EarlyStopping('val_loss', patience=10)],
+              batch_size = 50
               )
 
     #evaluate model
@@ -53,6 +53,7 @@ with np.load(path) as data:
     print('Test accuracy:', score[1])
 
     # summarize history for loss
+    plt.figure(0)
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
     plt.title('model loss')
@@ -60,17 +61,17 @@ with np.load(path) as data:
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
     plt.savefig('loss_hist1.png')
-    plt.show()
+    
 
     # summarize history for accuracy
-    plt.plot(history.history['accuracy'])
-    plt.plot(history.history['val_accuracy'])
-    plt.title('model accuracy')
-    plt.ylabel('accuracy')
+    plt.figure(1)
+    plt.plot(history.history['mse'])
+    plt.plot(history.history['val_mse'])
+    plt.title('model mse')
+    plt.ylabel('mse')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
     plt.savefig('acc_hist1.png')
-    plt.show()
 
     # save model
     model.save('firstNN_model1')
