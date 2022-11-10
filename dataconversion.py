@@ -48,22 +48,33 @@ def generate_training_data(simulation, output_name, event_type=None):
     for idx, event in enumerate(simulation.iterate_events()):
         # initialize tensor for each event
         input_tensor = -np.ones(input_tensor_dimensions)
-        output_matrix = -np.ones(output_matrix_dimensions)
+        output_matrix = -60*np.ones(output_matrix_dimensions)
         # load event features
         event_features = event.get_features()
         
         # make entries in tensor and saving tensor in list
         for counter, sipm_id in enumerate(event_features[2]):
             i, j, k = tensor_index(sipm_id)
-            input_tensor[i][j][k][0] = event_features[0][counter]
-            input_tensor[i][j][k][1] = event_features[1][counter]
+            qdc = event_features[0][counter]
+            if qdc == -1:
+                qdc+=1
+            input_tensor[i][j][k][0] = qdc
+            input_tensor[i][j][k][1] = event_features[1][counter]-np.min(event_features[1])
         all_events_input.append(input_tensor)
         
         # make entries in tensor and saving tensor in list
         for counter, fibre_id in enumerate(event_features[5]):
             n, m = matrix_index(fibre_id)
-            output_matrix[n][m][0] = event_features[3][counter]
-            output_matrix[n][m][1] = event_features[4][counter]
+            E = event_features[3][counter]
+            if E < 0:
+                E = 0
+            output_matrix[n][m][0] = E
+            y = event_features[4][counter]
+            if y>=-50:
+                y = (y+50)/100
+            else:
+                y = -1
+            output_matrix[n][m][1] = y
         all_events_output.append(output_matrix)
 
     # save features as numpy tensors
