@@ -56,8 +56,8 @@ def generate_training_data(simulation, output_name, event_type=None):
         for counter, sipm_id in enumerate(event_features[2]):
             i, j, k = tensor_index(sipm_id)
             qdc = event_features[0][counter]
-            if qdc == -1:
-                qdc+=1
+            if qdc <= 0:
+                qdc = 0
             input_tensor[i][j][k][0] = qdc
             input_tensor[i][j][k][1] = event_features[1][counter]-np.min(event_features[1])
         all_events_input.append(input_tensor)
