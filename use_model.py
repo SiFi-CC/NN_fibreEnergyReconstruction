@@ -33,8 +33,8 @@ with np.load(path) as data:
         Ex = []
         px = []
         for j in range(len(f_X_test[300][i])):
-            Ex.append(f_X_test[300][i][j][0])
-            px.append(f_X_test[300][i][j][1])
+            Ex.append(abs(f_X_test[300][i][j][0])) # - Y_test[300][i][j][0]))
+            px.append(abs(f_X_test[300][i][j][1])) # - Y_test[300][i][j][1]))
         E_err.append(np.array(Ex))
         p_err.append(np.array(px))
     E_err = np.array(E_err)
@@ -43,9 +43,9 @@ with np.load(path) as data:
     print(E_err)
     print(50*'-')
     print(p_err)
-'''
+
     plt.matshow(E_err)
     plt.show()
     plt.matshow(p_err)
     plt.show()
-'''
+
