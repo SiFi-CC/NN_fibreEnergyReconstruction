@@ -2,14 +2,16 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 import matplotlib.pyplot as plt
+import tensorflow_probability as tfp
 
 path = "1.npz"
-def custom_loss(penalty):
+def custom_loss(penalty_weight=1):
     def custom_fn(y_true, y_pred):
-        squared_loss = tf.square(tf.abs(y_true - y_pred))
-        if y_pred <= 0 and y_true > 0:
-            squared_loss +=  penalty
-        return squared_loss
+        squared_loss    = tf.square(tf.abs(y_true - y_pred))
+        true_std        = tfp.stats.stddev(y_true)
+        pred_std        = tfp.stats.stddev(y_pred)
+        var_loss        = tf.square(tf.abs(true_std - pred_std))
+        return squared_loss + penalty_weight*var_loss
     return custom_fn
 
 # load data
@@ -40,10 +42,11 @@ with np.load(path) as data:
                               keras.layers.Flatten(),
                               keras.layers.Dense(5192, activation = "elu"),
                               keras.layers.Reshape((22,118,2,))])
+    model.add_loss(custom_loss())
     # compile model
-    model.compile(loss=custom_loss(10000),
+    model.compile(loss=custom_loss(),
                   optimizer = "nadam",
-                  metrics=['mse',custom_loss(10000)]
+                  metrics=['mse']
                   )
 
 
