@@ -37,12 +37,10 @@ with np.load(path) as data:
     # define model
     model = keras.Sequential([keras.layers.InputLayer(input_shape = (12,2,32,2)),
                               keras.layers.Conv3D(filters = 16, kernel_size = 2, padding='same'),
-                              keras.layers.Conv3D(filters = 10, kernel_size = 2, padding='same'), # added in 2
-                              keras.layers.Conv3D(filters = 10, kernel_size = 2, padding='same'), # added in 2
                               keras.layers.Flatten(),
-                              keras.layers.Dense(5192, activation = "elu"),
+                              keras.layers.Dense(10000, activation = "tanh"),
+                              keras.layers.Dense(5192, activation = "tanh"),
                               keras.layers.Reshape((22,118,2,))])
-    model.add_loss(custom_loss())
     # compile model
     model.compile(loss=custom_loss(),
                   optimizer = "nadam",
@@ -57,7 +55,7 @@ with np.load(path) as data:
               Y_train, 
               epochs = 10000,    
               validation_data = (X_val, Y_val), 
-              callbacks = [tf.keras.callbacks.EarlyStopping('val_loss', patience=3)],
+              callbacks = [tf.keras.callbacks.EarlyStopping('val_loss', patience=10)],
               batch_size = 1000
               )
 
@@ -67,7 +65,7 @@ with np.load(path) as data:
     print('Test loss:', score[0]) 
     print('Test accuracy:', score[1])
 
-    '''
+  
 
     # summarize history for loss
     plt.figure(0)
@@ -90,7 +88,7 @@ with np.load(path) as data:
     plt.legend(['train', 'test'], loc='upper left')
     plt.savefig('acc_hist1.png')
                               
-    '''
+
 
     # save model
     model.save('firstNN_model2.h5')
