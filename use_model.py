@@ -68,8 +68,9 @@ with np.load(path) as data:
 
     f_X_test    = model.predict(X_test[index-5:index+5])
     print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[4] - Y_test[index])))
-
-for k in range(10):
+quantity = 50
+for k in range(quantity):
+    correction = quantity/2
     E_err = []
     p_err = []
     p_true = []
@@ -84,11 +85,11 @@ for k in range(10):
         Etx = []
         Erx = []
         for j in range(len(f_X_test[4][i])):
-            Ex.append(abs(f_X_test[k][i][j][0] - Y_test[index-5+k][i][j][0]))
-            px.append(abs(f_X_test[k][i][j][1] - Y_test[index-5+k][i][j][1]))
-            ptx.append(Y_test[index-5+k][i][j][1])
+            Ex.append(abs(f_X_test[k][i][j][0] - Y_test[index-correction+k][i][j][0]))
+            px.append(abs(f_X_test[k][i][j][1] - Y_test[index-correction+k][i][j][1]))
+            ptx.append(Y_test[index-correction+k][i][j][1])
             prx.append(f_X_test[k][i][j][1])
-            Etx.append(Y_test[index-5+k][i][j][0])
+            Etx.append(Y_test[index-correction+k][i][j][0])
             Erx.append(f_X_test[k][i][j][0])
         E_err.append(np.array(Ex))
         p_err.append(np.array(px))
@@ -103,7 +104,7 @@ for k in range(10):
     E_true = np.array(E_true)
     E_reco = np.array(E_reco)
 
-    make_hist(E_err, E_true, E_reco, p_err, p_true, p_reco, index-5+k)
+    make_hist(E_err, E_true, E_reco, p_err, p_true, p_reco, index-correction+k)
     
 
 
