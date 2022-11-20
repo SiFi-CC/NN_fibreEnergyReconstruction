@@ -24,15 +24,15 @@ def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number):
 
     # For Cosine Function
     axis[0, 1].matshow(p_err)
-    axis[0, 1].set_title("p_err")
+    axis[0, 1].set_title("y_err")
 
     # For Tangent Function
     axis[1, 1].matshow(p_true)
     axis[1, 1].set_title("y_true")
 
     # For Tanh Function
-    axis[1, 1].matshow(p_reco)
-    axis[1, 1].set_title("y_reco")
+    axis[2, 1].matshow(p_reco)
+    axis[2, 1].set_title("y_reco")
 
     # For Tangent Function
     axis[1, 0].matshow(E_true)
