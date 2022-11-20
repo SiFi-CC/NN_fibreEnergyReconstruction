@@ -66,12 +66,13 @@ with np.load(path) as data:
 
     model       = keras.models.load_model('firstNN_model2-1_newdata.h5', custom_objects={ 'custom_fn': custom_loss() })
 
-    f_X_test    = model.predict(X_test[index-5:index+5])
+    quantity = 50
+    correction = quantity//2
+
+    f_X_test    = model.predict(X_test[index-correction:index+correction])
     print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[4] - Y_test[index])))
 
-quantity = 50
 for k in range(quantity):
-    correction = int(quantity/2)
     E_err = []
     p_err = []
     p_true = []
