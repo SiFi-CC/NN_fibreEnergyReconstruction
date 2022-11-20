@@ -42,7 +42,7 @@ def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number):
     axis[2, 0].matshow(E_reco)
     axis[2, 0].set_title("E_reco")
 
-    plt.savefig("20_11_22_firstNN2-1_nd_Index="+str(number)".png")
+    plt.savefig("images/20_11_22_firstNN2-1_nd_Index="+str(number)".png")
     plt.show()
 
 with np.load(path) as data:
