@@ -68,16 +68,17 @@ with np.load(path) as data:
 
     f_X_test    = model.predict(X_test[index-5:index+5])
     print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[4] - Y_test[index])))
+
 quantity = 50
 for k in range(quantity):
-    correction = quantity/2
+    correction = int(quantity/2)
     E_err = []
     p_err = []
     p_true = []
     p_reco = []
     E_true = []
     E_reco = []
-    for i in range(len(f_X_test[4] - Y_test[index])):
+    for i in range(len(f_X_test[4])):
         Ex = []
         px = []
         ptx = []
