@@ -3,8 +3,8 @@ import tensorflow as tf
 from tensorflow import keras
 import matplotlib.pyplot as plt
 
-path = "1.npz"
-index = 107
+path = "FinalDetectorVersion_PlaneCoupling_OPM_38e8protons.npz"
+index = 7467
 
 def custom_loss(penalty_weight=1):
     def custom_fn(y_true, y_pred):
@@ -14,6 +14,36 @@ def custom_loss(penalty_weight=1):
         var_loss        = tf.square(tf.abs(true_std - pred_std))
         return squared_loss + penalty_weight*var_loss
     return custom_fn
+
+def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number):
+    figure, axis = plt.subplots(3, 2)
+
+    # E err
+    axis[0, 0].matshow(E_err)
+    axis[0, 0].set_title("E_err")
+
+    # For Cosine Function
+    axis[0, 1].matshow(p_err)
+    axis[0, 1].set_title("p_err")
+
+    # For Tangent Function
+    axis[1, 1].matshow(p_true)
+    axis[1, 1].set_title("y_true")
+
+    # For Tanh Function
+    axis[1, 2].matshow(p_reco)
+    axis[1, 2].set_title("y_reco")
+
+    # For Tangent Function
+    axis[1, 0].matshow(E_true)
+    axis[1, 0].set_title("E_true")
+
+    # For Tanh Function
+    axis[2, 0].matshow(E_reco)
+    axis[2, 0].set_title("E_reco")
+
+    plt.savefig("20_11_22_firstNN2-1_nd_Index="+str(number)".png")
+    plt.show()
 
 with np.load(path) as data:
     input_data  = data["all_events_input"]
@@ -34,72 +64,46 @@ with np.load(path) as data:
     X_test  = input_data[valset_index:]
     Y_test  = output_data[valset_index:]
 
-    model       = keras.models.load_model('firstNN_model2.h5', custom_objects={ 'custom_fn': custom_loss() })
+    model       = keras.models.load_model('firstNN_model2-1_newdata.h5', custom_objects={ 'custom_fn': custom_loss() })
 
-    f_X_test    = model.predict(X_test)
-    print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[index] - Y_test[index])))
+    f_X_test    = model.predict(X_test[index-5:index+5])
+    print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[4] - Y_test[index])))
+
+for k in range(10):
     E_err = []
     p_err = []
     p_true = []
-    p_reco = []
+    P_reco = []
     E_true = []
     E_reco = []
-    for i in range(len(f_X_test[index] - Y_test[index])):
+    for i in range(len(f_X_test[4] - Y_test[index])):
         Ex = []
         px = []
         ptx = []
         prx = []
         Etx = []
         Erx = []
-        for j in range(len(f_X_test[index][i])):
-            Ex.append(abs(f_X_test[index][i][j][0] - Y_test[index][i][j][0]))
-            px.append(abs(f_X_test[index][i][j][1] - Y_test[index][i][j][1]))
-            ptx.append(Y_test[index][i][j][1])
-            prx.append(f_X_test[index][i][j][1])
-            Etx.append(Y_test[index][i][j][0])
-            Erx.append(f_X_test[index][i][j][0])
+        for j in range(len(f_X_test[4][i])):
+            Ex.append(abs(f_X_test[k][i][j][0] - Y_test[index-5+k][i][j][0]))
+            px.append(abs(f_X_test[k][i][j][1] - Y_test[index-5+k][i][j][1]))
+            ptx.append(Y_test[index-5+k][i][j][1])
+            prx.append(f_X_test[k][i][j][1])
+            Etx.append(Y_test[index-5+k][i][j][0])
+            Erx.append(f_X_test[k][i][j][0])
         E_err.append(np.array(Ex))
         p_err.append(np.array(px))
-        p_true.append(ptx)
-        p_reco.append(prx)
-        E_true.append(Etx)
-        E_reco.append(Erx)
+        p_true.append(np.array(ptx))
+        p_reco.append(np.array(prx))
+        E_true.append(np.array(Etx))
+        E_reco.append(np.array(Erx))
     E_err = np.array(E_err)
     p_err = np.array(p_err)
     p_true = np.array(p_true)
     p_reco = np.array(p_reco)+1
     E_true = np.array(E_true)
     E_reco = np.array(E_reco)
-            
-    print(E_err)
-    print(50*'-')
-    print(p_err)
 
-    figure, axis = plt.subplots(3, 2)
-  
-    # E err
-    axis[0, 0].matshow(E_err)
-    axis[0, 0].set_title("E_err")
-      
-    # For Cosine Function
-    axis[0, 1].matshow(p_err)
-    axis[0, 1].set_title("p_err")
-      
-    # For Tangent Function
-    axis[1, 0].matshow(p_true)
-    axis[1, 0].set_title("p_true")
-      
-    # For Tanh Function
-    axis[1, 1].matshow(p_reco)
-    axis[1, 1].set_title("p_reco")
+    make_hist(E_err, E_true, E_reco, p_err, p_true, p_reco, index-5+k)
+    
 
-    # For Tangent Function
-    axis[2, 0].matshow(E_true)
-    axis[2, 0].set_title("E_true")
-      
-    # For Tanh Function
-    axis[2, 1].matshow(E_reco)
-    axis[2, 1].set_title("E_reco")
-
-    plt.show()
 
