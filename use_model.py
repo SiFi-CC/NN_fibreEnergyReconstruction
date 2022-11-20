@@ -31,8 +31,8 @@ def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number):
     axis[1, 1].set_title("y_true")
 
     # For Tanh Function
-    axis[1, 2].matshow(p_reco)
-    axis[1, 2].set_title("y_reco")
+    axis[1, 1].matshow(p_reco)
+    axis[1, 1].set_title("y_reco")
 
     # For Tangent Function
     axis[1, 0].matshow(E_true)
