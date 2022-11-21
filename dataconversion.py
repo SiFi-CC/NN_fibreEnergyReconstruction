@@ -22,7 +22,7 @@ def matrix_index(fibre_id):
     # x and z in scatterer
     if fibre_id < 385:
         x = fibre_id // 55
-        z = fibre_id % 55 # Maybe add correction
+        z = (fibre_id % 55) + 4 # correction
     else:
         fibre_id -= 385
         x = (fibre_id // 63) + 7
@@ -86,6 +86,6 @@ def generate_training_data(simulation, output_name, event_type=None):
 
 
 simulation = Simulation(
-    file_name="/net/data_g4rt/projects/SiFiCC/InputforNN/SiPMNNNewGeometry/FinalDetectorVersion_RasterCoupling_8e7protons.root")
+    file_name="/net/data_g4rt/projects/SiFiCC/InputforNN/SiPMNNNewGeometry/FinalDetectorVersion_RasterCoupling_OPM_38e8protons.root")
 
-generate_training_data(simulation=simulation, output_name='1.npz')
+generate_training_data(simulation=simulation, output_name='FinalDetectorVersion_RasterCoupling_OPM_38e8protons.npz')
