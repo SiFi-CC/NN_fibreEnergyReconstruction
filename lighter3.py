@@ -64,7 +64,7 @@ with np.load(path) as data:
 
     print('Test loss:', score[0]) 
     print('Test accuracy:', score[1])
-    model.save("lighter3.h5")
+    model.save("lighter3_.h5")
   
 
     # summarize history for loss
