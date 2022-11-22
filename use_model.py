@@ -42,8 +42,7 @@ def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number):
     axis[2, 0].matshow(E_reco)
     axis[2, 0].set_title("E_reco")
 
-    plt.savefig("images/20_11_22_firstNN2-1_nd_Index="+str(number)+".png")
-    plt.show()
+    plt.savefig("images/20_11_22_l1_Index="+str(number)+".png")
 
 with np.load(path) as data:
     input_data  = data["all_events_input"]
@@ -64,7 +63,9 @@ with np.load(path) as data:
     X_test  = input_data[valset_index:]
     Y_test  = output_data[valset_index:]
 
-    model       = keras.models.load_model('firstNN_model2-1_newdata.h5', custom_objects={ 'custom_fn': custom_loss() })
+    model       = keras.models.load_model('lighter1.h5', custom_objects={ 'custom_fn': custom_loss() })
+    
+    model.summary()
 
     quantity = 50
     correction = quantity//2
