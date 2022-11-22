@@ -38,7 +38,7 @@ with np.load(path) as data:
     model = keras.Sequential([keras.layers.InputLayer(input_shape = (12,2,32,2)),
                               keras.layers.Conv3D(filters = 16, kernel_size = 2, padding='same'),
                               keras.layers.Conv3D(filters = 16, kernel_size = 2, padding="same"),
-                              keras.layers.MaxPooling3D()
+                              keras.layers.MaxPooling3D(),
                               keras.layers.Flatten(),
                               keras.layers.Dense(5192, activation = "tanh"),
                               keras.layers.Reshape((22,118,2,))])
