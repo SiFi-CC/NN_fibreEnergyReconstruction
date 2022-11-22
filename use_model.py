@@ -42,7 +42,7 @@ def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number):
     axis[2, 0].matshow(E_reco)
     axis[2, 0].set_title("E_reco")
 
-    plt.savefig("images/22_11_22_l2_Index="+str(number)+".png")
+    plt.savefig("images/22_11_22_l3_Index="+str(number)+".png")
 
 with np.load(path) as data:
     input_data  = data["all_events_input"]
@@ -63,7 +63,7 @@ with np.load(path) as data:
     X_test  = input_data[valset_index:]
     Y_test  = output_data[valset_index:]
 
-    model       = keras.models.load_model('lighter2.h5')  #, custom_objects={ 'custom_fn': custom_loss() })
+    model       = keras.models.load_model('lighter3.h5')  #, custom_objects={ 'custom_fn': custom_loss() })
     
     model.summary()
 
