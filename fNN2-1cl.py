@@ -11,13 +11,7 @@ def custom_loss(penalty_weight=1):
         true_std        = tfp.stats.stddev(y_true)
         pred_std        = tfp.stats.stddev(y_pred)
         var_loss        = tf.square(tf.abs(true_std - pred_std))
-        coupling_penalty = 0
-        for i in range(y_true.shape):
-            for j in range(y_true[0].shape):
-                for k in range(y_true[0][0].shape):
-                    if (y_pred[i][j][k][0] != 0) != (y_pred[i][j][k] != -1):
-                        coupling_penalty = 1
-        return tf.sqrt(tf.square(squared_loss) + tf.square(penalty_weight*var_loss) + coupling_penalty**2)
+        return tf.sqrt(tf.square(squared_loss) + tf.square(penalty_weight*var_loss))
     return custom_fn
 
 # load data
