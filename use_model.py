@@ -5,8 +5,10 @@ import matplotlib.pyplot as plt
 
 path        = "FinalDetectorVersion_RasterCoupling_OPM_38e8protons.npz"
 index       = 7467
-filenames   = ["fNN2-1cl","lighter1","lighter2","lighter3","lighter4","lighter5","fNN2-1mse","firstNN_model2-2"]
-cl          = [True,True,False,False,False,False,False,True]
+#filenames   = ["fNN2-1cl","lighter1","lighter2","lighter3","lighter4","lighter5","fNN2-1mse","firstNN_model2-2"]
+#cl          = [True,True,False,False,False,False,False,True]
+filenames = ["dNN1","dNN1-1","dNN1-2","dNN1-3"]
+
 
 data = np.load(path)
 input_data  = data["all_events_input"]
@@ -113,4 +115,4 @@ def evaluate_predictions(filename, cl = False):
         make_hist(E_err, E_true, E_reco, p_err, p_true, p_reco, index-correction+k, filename)
 
 for i,filename in enumerate(filenames):
-    evaluate_predictions(filename,cl[i])
+    evaluate_predictions(filename)#,cl[i])
