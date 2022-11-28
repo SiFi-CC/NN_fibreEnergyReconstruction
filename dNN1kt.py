@@ -63,6 +63,9 @@ with np.load(path) as data:
 
     models = tuner.get_best_models(num_models=5)
     tuner.results_summary()
+    for i,m in enumerate(models):
+        m.save("22_11_29_RS_"+str(i)+".h5")
+    
     for m in models:
         m.build(input_shape=(None,12,2,32))
         m.summary()
