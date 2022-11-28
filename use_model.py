@@ -15,7 +15,7 @@ def custom_loss(penalty_weight=1):
         return squared_loss + penalty_weight*var_loss
     return custom_fn
 
-def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number):
+def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number, filename):
     figure, axis = plt.subplots(3, 2)
 
     # E err
@@ -42,72 +42,76 @@ def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number):
     axis[2, 0].matshow(E_reco)
     axis[2, 0].set_title("E_reco")
 
-    plt.savefig("images/24_11_22_fNN2-1cl_Index="+str(number)+".png")
+    plt.savefig("images/28_11_22_"+filename+"_index="+str(number)+".png")
 
-with np.load(path) as data:
-    input_data  = data["all_events_input"]
-    output_data = data["all_events_output"]
+def evaluate_predictions(filename, cl = False):
+    with np.load(filename) as data:
+        input_data  = data["all_events_input"]
+        output_data = data["all_events_output"]
 
-    print(input_data.shape)
-    print(output_data.shape)
+        print(input_data.shape)
+        print(output_data.shape)
 
-    # slice data
-    trainset_index  = int(input_data.shape[0]*0.7)
-    valset_index    = int(input_data.shape[0]*0.8)
-    print(trainset_index)
-    print(valset_index)
-    X_train = input_data[:trainset_index]
-    Y_train = output_data[:trainset_index]
-    X_val   = input_data[trainset_index:valset_index]
-    Y_val   = output_data[trainset_index:valset_index]
-    X_test  = input_data[valset_index:]
-    Y_test  = output_data[valset_index:]
+        # slice data
+        trainset_index  = int(input_data.shape[0]*0.7)
+        valset_index    = int(input_data.shape[0]*0.8)
+        print(trainset_index)
+        print(valset_index)
+        X_train = input_data[:trainset_index]
+        Y_train = output_data[:trainset_index]
+        X_val   = input_data[trainset_index:valset_index]
+        Y_val   = output_data[trainset_index:valset_index]
+        X_test  = input_data[valset_index:]
+        Y_test  = output_data[valset_index:]
+        
+        if cl:
+            model       = keras.models.load_model(filename+'.h5', custom_objects={ 'custom_fn': custom_loss() })
+        else:
+            model       = keras.models.load_model(filename+'.h5')
+        
+        model.summary()
 
-    model       = keras.models.load_model('fNN2-1cl.h5', custom_objects={ 'custom_fn': custom_loss() })
-    
-    model.summary()
+        quantity = 50
+        correction = quantity//2
 
-    quantity = 50
-    correction = quantity//2
+        f_X_test    = model.predict(X_test[index-correction:index+correction])
+        print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[4] - Y_test[index])))
 
-    f_X_test    = model.predict(X_test[index-correction:index+correction])
-    print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[4] - Y_test[index])))
+    for k in range(quantity):
+        E_err = []
+        p_err = []
+        p_true = []
+        p_reco = []
+        E_true = []
+        E_reco = []
+        for i in range(len(f_X_test[4])):
+            Ex = []
+            px = []
+            ptx = []
+            prx = []
+            Etx = []
+            Erx = []
+            for j in range(len(f_X_test[4][i])):
+                Ex.append(abs(f_X_test[k][i][j][0] - Y_test[index-correction+k][i][j][0]))
+                px.append(abs(f_X_test[k][i][j][1] - Y_test[index-correction+k][i][j][1]))
+                ptx.append(Y_test[index-correction+k][i][j][1])
+                prx.append(f_X_test[k][i][j][1])
+                Etx.append(Y_test[index-correction+k][i][j][0])
+                Erx.append(f_X_test[k][i][j][0])
+            E_err.append(np.array(Ex))
+            p_err.append(np.array(px))
+            p_true.append(np.array(ptx))
+            p_reco.append(np.array(prx))
+            E_true.append(np.array(Etx))
+            E_reco.append(np.array(Erx))
+        E_err = np.array(E_err)
+        p_err = np.array(p_err)
+        p_true = np.array(p_true)
+        p_reco = np.array(p_reco)+1
+        E_true = np.array(E_true)
+        E_reco = np.array(E_reco)
 
-for k in range(quantity):
-    E_err = []
-    p_err = []
-    p_true = []
-    p_reco = []
-    E_true = []
-    E_reco = []
-    for i in range(len(f_X_test[4])):
-        Ex = []
-        px = []
-        ptx = []
-        prx = []
-        Etx = []
-        Erx = []
-        for j in range(len(f_X_test[4][i])):
-            Ex.append(abs(f_X_test[k][i][j][0] - Y_test[index-correction+k][i][j][0]))
-            px.append(abs(f_X_test[k][i][j][1] - Y_test[index-correction+k][i][j][1]))
-            ptx.append(Y_test[index-correction+k][i][j][1])
-            prx.append(f_X_test[k][i][j][1])
-            Etx.append(Y_test[index-correction+k][i][j][0])
-            Erx.append(f_X_test[k][i][j][0])
-        E_err.append(np.array(Ex))
-        p_err.append(np.array(px))
-        p_true.append(np.array(ptx))
-        p_reco.append(np.array(prx))
-        E_true.append(np.array(Etx))
-        E_reco.append(np.array(Erx))
-    E_err = np.array(E_err)
-    p_err = np.array(p_err)
-    p_true = np.array(p_true)
-    p_reco = np.array(p_reco)+1
-    E_true = np.array(E_true)
-    E_reco = np.array(E_reco)
-
-    make_hist(E_err, E_true, E_reco, p_err, p_true, p_reco, index-correction+k)
+        make_hist(E_err, E_true, E_reco, p_err, p_true, p_reco, index-correction+k, filename)
     
 
 
