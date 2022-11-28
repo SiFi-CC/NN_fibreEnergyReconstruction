@@ -48,7 +48,7 @@ with np.load(path) as data:
                                      executions_per_trial=2,
                                      overwrite=True,
                                      directory="RandomSearch",
-                                     projectname="dNN1"
+                                     project_name="dNN1"
                                      )
 
 
