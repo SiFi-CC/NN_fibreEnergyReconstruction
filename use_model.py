@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 path        = "FinalDetectorVersion_RasterCoupling_OPM_38e8protons.npz"
 index       = 7467
 filenames   = ["fNN2-1cl","lighter1","lighter2","lighter3","lighter4","lighter5","fNN2-1mse","firstNN_model2-2"]
-cl          = [True,False,False,False,False,False,False,True]
+cl          = [True,True,False,False,False,False,False,True]
 
 data = np.load(path)
 input_data  = data["all_events_input"]
@@ -61,6 +61,7 @@ def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number, filename):
     plt.savefig("images/28_11_22_"+filename+"_index="+str(number)+".png")
 
 def evaluate_predictions(filename, cl = False):
+    print(filename)
 
     if cl:
         model       = keras.models.load_model(filename+'.h5', custom_objects={ 'custom_fn': custom_loss() })
