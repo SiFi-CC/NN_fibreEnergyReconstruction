@@ -8,6 +8,20 @@ index       = 7467
 filenames   = ["fNN2-1.cl.h5","lighter1.h5","lighter2.h5","lighter3.h5","lighter4.h5","lighter5.h5","fNN2-1mse.h5","firstNN_model2-2.h5"]
 cl          = [True,False,False,False,False,False,False,True]
 
+data = np.load(path)
+input_data  = data["all_events_input"]
+output_data = data["all_events_output"]
+
+# slice data
+trainset_index  = int(input_data.shape[0]*0.7)
+valset_index    = int(input_data.shape[0]*0.8)
+
+X_test  = input_data[valset_index:]
+Y_test  = output_data[valset_index:]
+
+input_data = 0
+output_data = 0
+
 def custom_loss(penalty_weight=1):
     def custom_fn(y_true, y_pred):
         squared_loss    = tf.square(tf.abs(y_true - y_pred))
@@ -47,37 +61,19 @@ def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number, filename):
     plt.savefig("images/28_11_22_"+filename+"_index="+str(number)+".png")
 
 def evaluate_predictions(filename, cl = False):
-    with np.load(path) as data:
-        input_data  = data["all_events_input"]
-        output_data = data["all_events_output"]
 
-        print(input_data.shape)
-        print(output_data.shape)
+    if cl:
+        model       = keras.models.load_model(filename+'.h5', custom_objects={ 'custom_fn': custom_loss() })
+    else:
+        model       = keras.models.load_model(filename+'.h5')
+    
+    model.summary()
 
-        # slice data
-        trainset_index  = int(input_data.shape[0]*0.7)
-        valset_index    = int(input_data.shape[0]*0.8)
-        print(trainset_index)
-        print(valset_index)
-        X_train = input_data[:trainset_index]
-        Y_train = output_data[:trainset_index]
-        X_val   = input_data[trainset_index:valset_index]
-        Y_val   = output_data[trainset_index:valset_index]
-        X_test  = input_data[valset_index:]
-        Y_test  = output_data[valset_index:]
-        
-        if cl:
-            model       = keras.models.load_model(filename+'.h5', custom_objects={ 'custom_fn': custom_loss() })
-        else:
-            model       = keras.models.load_model(filename+'.h5')
-        
-        model.summary()
+    quantity = 50
+    correction = quantity//2
 
-        quantity = 50
-        correction = quantity//2
-
-        f_X_test    = model.predict(X_test[index-correction:index+correction])
-        print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[4] - Y_test[index])))
+    f_X_test    = model.predict(X_test[index-correction:index+correction])
+    print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[4] - Y_test[index])))
 
     for k in range(quantity):
         E_err = []
