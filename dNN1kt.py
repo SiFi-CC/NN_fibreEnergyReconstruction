@@ -16,8 +16,7 @@ def build_model(hp):
                               keras.layers.Dense(5192, activation = af),
                               keras.layers.Reshape((22,118,2,))])
     model.compile(loss="mse",
-                  optimizer="nadam",
-
+                  optimizer="nadam")
     return model
 
 # load data
