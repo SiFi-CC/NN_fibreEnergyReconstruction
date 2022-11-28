@@ -39,15 +39,15 @@ def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number, filename):
     axis[0, 0].set_title("E_err")
 
     # For Cosine Function
-    axis[0, 1].matshow(p_err)
+    axis[0, 1].matshow(y_err)
     axis[0, 1].set_title("y_err")
 
     # For Tangent Function
-    axis[1, 1].matshow(p_true)
+    axis[1, 1].matshow(y_true)
     axis[1, 1].set_title("y_true")
 
     # For Tanh Function
-    axis[2, 1].matshow(p_reco)
+    axis[2, 1].matshow(y_reco)
     axis[2, 1].set_title("y_reco")
 
     # For Tangent Function
@@ -73,7 +73,7 @@ def evaluate_predictions(filename, cl = False):
     correction = quantity//2
 
     f_X_test    = model.predict(X_test[index-correction:index+correction])
-    print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[4] - Y_test[index])))
+    #print("Xvalue=%s, Difference=%s" % (X_test[index], abs(f_X_test[4] - Y_test[index])))
 
     for k in range(quantity):
         E_err = []
@@ -110,9 +110,6 @@ def evaluate_predictions(filename, cl = False):
         E_reco = np.array(E_reco)
 
         make_hist(E_err, E_true, E_reco, p_err, p_true, p_reco, index-correction+k, filename)
-    
-
-
 
 for i,filename in enumerate(filenames):
     evaluate_predictions(filename,cl[i])
