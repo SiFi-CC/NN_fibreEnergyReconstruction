@@ -10,7 +10,7 @@ path = "FinalDetectorVersion_RasterCoupling_OPM_38e8protons.npz"
 def build_model(hp):
     af = hp.Choice("acitvation",["relu","elu","tanh"])
     model = keras.Sequential([keras.layers.InputLayer(input_shape = (12,2,32,2)),
-                              keras.layers.Conv3D(filters = hp.Int, kernel_size = 2, padding='same'),
+                              keras.layers.Conv3D(filters = hp.Int("units", min_value=1, max_value=16,step=1), kernel_size = 2, padding='same'),
                               keras.layers.Flatten(),
                               keras.layers.Dense(hp.Int("units", min_value =500, max_value = 10000, step =500), activation = af),
                               keras.layers.Dense(5192, activation = af),
