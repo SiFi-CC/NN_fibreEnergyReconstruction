@@ -45,7 +45,7 @@ with np.load(path) as data:
     tuner = keras_tuner.RandomSearch(hypermodel=build_model,
                                      objective="val_loss",
                                      max_trials=3,
-                                     exeutions_per_trial=2,
+                                     executions_per_trial=2,
                                      overwrite=True,
                                      directory="RandomSearch",
                                      projectname="dNN1"
