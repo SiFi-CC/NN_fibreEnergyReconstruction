@@ -3,8 +3,10 @@ import tensorflow as tf
 from tensorflow import keras
 import matplotlib.pyplot as plt
 
-path = "FinalDetectorVersion_RasterCoupling_OPM_38e8protons.npz"
-index = 7467
+path        = "FinalDetectorVersion_RasterCoupling_OPM_38e8protons.npz"
+index       = 7467
+filenames   = ["fNN2-1.cl.h5","lighter1.h5","lighter2.h5","lighter3.h5","lighter4.h5","lighter5.h5","fNN2-1mse.h5","firstNN_model2-2.h5"]
+cl          = [True,False,False,False,False,False,False,True]
 
 def custom_loss(penalty_weight=1):
     def custom_fn(y_true, y_pred):
@@ -45,7 +47,7 @@ def make_hist(E_err, E_true, E_reco, y_err, y_true, y_reco, number, filename):
     plt.savefig("images/28_11_22_"+filename+"_index="+str(number)+".png")
 
 def evaluate_predictions(filename, cl = False):
-    with np.load(filename) as data:
+    with np.load(path) as data:
         input_data  = data["all_events_input"]
         output_data = data["all_events_output"]
 
@@ -115,3 +117,6 @@ def evaluate_predictions(filename, cl = False):
     
 
 
+
+for i,filename in enumerate(filenames):
+    evaluate_predictions(filename,cl[i])
