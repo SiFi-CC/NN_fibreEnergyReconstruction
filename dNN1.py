@@ -4,6 +4,8 @@ from tensorflow import keras
 import matplotlib.pyplot as plt
 import tensorflow_probability as tfp
 
+path = "FinalDetectorVersion_RasterCoupling_OPM_38e8protons.npz"
+
 # load data
 with np.load(path) as data:
     input_data = data["all_events_input"]
@@ -65,7 +67,7 @@ with np.load(path) as data:
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig('loss_hist1.png')
+    plt.savefig('loss_hist_dNN1.png')
     
 
     # summarize history for accuracy
@@ -76,4 +78,4 @@ with np.load(path) as data:
     plt.ylabel('mae')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig('acc_hist_newdata.png')
+    plt.savefig('acc_hist_dNN1.png')
