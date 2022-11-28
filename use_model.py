@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 path        = "FinalDetectorVersion_RasterCoupling_OPM_38e8protons.npz"
 index       = 7467
-filenames   = ["fNN2-1.cl.h5","lighter1.h5","lighter2.h5","lighter3.h5","lighter4.h5","lighter5.h5","fNN2-1mse.h5","firstNN_model2-2.h5"]
+filenames   = ["fNN2-1cl","lighter1","lighter2","lighter3","lighter4","lighter5","fNN2-1mse","firstNN_model2-2"]
 cl          = [True,False,False,False,False,False,False,True]
 
 data = np.load(path)
