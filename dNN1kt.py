@@ -8,7 +8,7 @@ import keras_tuner
 path = "FinalDetectorVersion_RasterCoupling_OPM_38e8protons.npz"
 
 def build_model(hp):
-    af = hp.Choice("acitvation",["relu","elu","tanh"])
+    af = "tanh"
     model = keras.Sequential([keras.layers.InputLayer(input_shape = (12,2,32,2)),
         keras.layers.Conv3D(filters = hp.Int("filters", min_value=1, max_value=16,step=1), kernel_size = 2, padding='same'),
                               keras.layers.Flatten(),
